@@ -305,7 +305,7 @@ p {
 
 
 
-    /* ===== Footer (namespaced) ===== */
+      /* ===== Footer (namespaced) ===== */
 .ftr99{
   position: relative;
   background: #000;           /* deep black */
@@ -394,11 +394,38 @@ p {
 .ftr99-links a:hover{ color: #ffffff; text-decoration: underline; }
 
 /* bottom row */
-.ftr99-bottom{
+.ftr99-bottom {
   margin-top: clamp(40px, 5vw, 64px);
   color: #bdbdbd;
   font-size: 15px;
+  text-align: center; /* center everything */
 }
+
+.certifications-99 {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* spacing between logos */
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.cert-box-99 {
+  width: 80px;
+  height: 80px;
+  background: #222; /* optional dark box background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px; /* slight rounded corners */
+  overflow: hidden;
+}
+
+.cert-box-99 img {
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: contain;
+}
+
 
 /* ===== Responsive ===== */
 @media (max-width: 1000px){
@@ -665,3 +692,4 @@ p {
 
 </body>
 </html>
+
