@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Single Page — Grid Background</title>
+  <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- Config (change these) ---------- */
+    :root{
+      --bg-color: #f8fafc;        /* page base color */
+      --line-color: rgba(0,0,0,0.04); /* grid line color (low opacity = subtle) */
+      --grid-size: 10px;         /* grid cell size */
+    }
+
+    /* ---------- Reset & layout ---------- */
+    * { box-sizing: border-box; }
+    html,body {
+         height: 100%; 
+         margin: 0; 
+         font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system,
+               "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+               "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-optical-sizing: auto;  /* variable font axis */
+   scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+         }
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-color);
+      /* === SOLID GRID (graph paper style) === */
+      background-image:
+        linear-gradient(to right, var(--line-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--line-color) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+      /* uncomment the next two lines and comment the above two to use dotted grid instead */
+      /*
+      background-image:
+        radial-gradient(var(--line-color) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+      */
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Optional: a centered container so you can see content on top of grid */
+    .wrap {
+      max-width: 980px;
+      margin: 4rem auto;
+      background: rgba(255,255,255,0.72);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 30px rgba(20,20,40,0.06);
+      backdrop-filter: blur(6px);
+      z-index: -1;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+/* Fluid font sizes using clamp(min, preferred, max) */
+h1 { font-size: clamp(1.8rem, 4vw + 1rem, 3rem); }
+h2 { font-size: clamp(1.6rem, 3vw + 0.8rem, 2.4rem); }
+h3 { font-size: clamp(1.4rem, 0.5vw + 0.1rem, 2rem); }
+h4 { font-size: clamp(1.2rem, 2vw + 0.5rem, 1.6rem); }
+h5 { font-size: clamp(1rem, 1.5vw + 0.4rem, 1.3rem); }
+h6 { font-size: clamp(0.9rem, 1.2vw + 0.3rem, 1.1rem); }
+
+p {
+  margin: 0 0 1rem 0;
+  color: #334155;
+  line-height: 1.5;
+  font-size: clamp(0.95rem, 1vw + 0.4rem, 1.125rem);
+}
+
+
+        /* small demo controls (not required) */
+.controls { display:flex; gap:8px; flex-wrap:wrap; margin-top:1rem; }
+.chip {
+    cursor: pointer;
+    border: 1px solid rgba(15,23,42,0.06);
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    }
+    .navbar-container {
+  background: #fff;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+}
+
+ .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: #fff;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      
+    }
+
+    .logo img {
+      height: 65px;
+      border-radius: 50%;
+    }
+
+    /* Nav links desktop */
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #000;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ff5100;
+    }
+
+    /* Contact button */
+    .contact-btn {
+      display: flex;
+      align-items: center;
+      background: #111;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      gap: 10px;
+    }
+
+    .contact-btn .circle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 35px;
+      height: 35px;
+      background: #fff;
+      border-radius: 50%;
+      color: #000;
+      transition: background 0.3s ease, color 0.3s ease;
+      font-size: 28px;   /* size of arrow */
+        line-height: 1;
+    }
+
+    .contact-btn:hover .circle {
+      background: #ff5100;
+      color: #fff;
+    }
+
+    /* Hamburger (hidden desktop) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #000;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      padding: 20px;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      z-index: 9999;
+    }
+
+    .mobile-menu a {
+      margin: 10px 0;
+      text-decoration: none;
+      color: #000;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .mobile-menu a:hover {
+      color: #ff5100;
+    }
+
+    .mobile-menu .contact-btn {
+      margin-top: 15px;
+      justify-content: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links, .contact-btn {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+
+
+
+.terms-conditions {
+  padding: 60px 20px;
+  background: #fafafa;
+  color: #333;
+  line-height: 1.7;
+}
+
+.terms-conditions .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.terms-conditions h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #111;
+}
+
+.terms-conditions h2 {
+  margin-top: 30px;
+  font-size: 24px;
+  color: #222;
+}
+
+.terms-conditions h3 {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #444;
+}
+
+.terms-conditions p {
+  margin-bottom: 15px;
+}
+
+.terms-conditions ul,
+.terms-conditions ol {
+  margin: 15px 0 15px 20px;
+  padding-left: 20px;
+  list-style-position: outside;
+}
+
+.terms-conditions li {
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+/* Links */
+.terms-conditions a {
+  color: #ff5100;
+  text-decoration: none;
+}
+.terms-conditions a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .terms-conditions .container {
+    padding: 20px;
+  }
+  .terms-conditions h1 {
+    font-size: 26px;
+  }
+  .terms-conditions h2 {
+    font-size: 20px;
+  }
+  .terms-conditions ul,
+  .terms-conditions ol {
+    margin-left: 0;
+    padding-left: 20px; /* keeps bullets aligned left */
+  }
+}
+
+
+
+    /* ===== Footer (namespaced) ===== */
+.ftr99{
+  position: relative;
+  background: #000;           /* deep black */
+  color: #eaeaea;
+  overflow: clip;
+  padding: 56px 20px 40px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* faint star field */
+.ftr99-stars{
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,.45) 50%, transparent 51%) 0 0/180px 180px,
+    radial-gradient(1.5px 1.5px at 40% 60%, rgba(255,255,255,.35) 50%, transparent 51%) 0 0/220px 220px,
+    radial-gradient(1.2px 1.2px at 75% 30%, rgba(255,255,255,.35) 50%, transparent 51%) 0 0/260px 260px;
+  opacity: .35;
+  pointer-events: none;
+}
+
+/* content wrapper */
+.ftr99-wrap{
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* top grid: brand takes more space, 3 link cols equal */
+.ftr99-grid{
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: clamp(24px, 3vw, 60px);
+  align-items: start;
+}
+
+/* brand block */
+.ftr99-brand{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "logo logo"
+    "blurb blurb";
+  gap: 18px 16px;
+}
+
+.ftr99-logo{
+  grid-area: logo;
+  display:inline-block;
+  width: 120px;
+  height: 120px;
+}
+.ftr99-logo svg{ width:100%; height:100%; }
+
+.ftr99-blurb{
+  grid-area: blurb;
+  max-width: 520px;
+  margin: 0;
+  color: #d9d9d9;
+  font-size: clamp(16px, 1.5vw, 20px);
+  line-height: 1.55;
+}
+
+/* link columns */
+
+.ftr99-head{
+  margin: 0 0 14px;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 700;
+  color: #b9b9b9;             /* muted head like screenshot */
+}
+.ftr99-links{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.ftr99-links a{
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: clamp(16px, 1.4vw, 20px);
+  letter-spacing: .2px;
+}
+.ftr99-links a:hover{ color: #ffffff; text-decoration: underline; }
+
+/* bottom row */
+.ftr99-bottom{
+  margin-top: clamp(40px, 5vw, 64px);
+  color: #bdbdbd;
+  font-size: 15px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1000px){
+  .ftr99-grid{
+    grid-template-columns: 1fr 1fr;   /* 2 columns on tablets */
+  }
+  .ftr99-brand{
+    grid-column: 1 / -1;              /* brand spans full width */
+  }
+}
+
+@media (max-width: 640px){
+  .ftr99{
+    padding: 40px 16px 28px;
+  }
+  .ftr99-grid{
+    grid-template-columns: 1fr;       /* stack all */
+    gap: 28px;
+    text-align: left;                 /* keep left-aligned like design */
+  }
+  .ftr99-logo{ width: 100px; height: 100px; }
+  .ftr99-bottom{
+    text-align: left;
+    margin-top: 24px;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+    <div class="navbar-container">
+  <nav class="navbar">
+    <!-- Logo -->
+    <div class="logo">
+      <a href="#Home">
+      <img src='logo-black.png' alt="Logo">
+      </a>
+    </div>
+
+    <!-- Desktop links -->
+    <div class="nav-links">
+      <a href="#aboutus">About us</a>
+      <a href="#Services-sec">Services</a>
+      <a href="#Process-sec">Process</a>
+      <a href="#Projects-sec">Works</a>
+      <a href="#review-sec">Reviews</a>
+    </div>
+
+    <!-- Desktop button -->
+    <a href="#" class="contact-btn">
+      Contact
+      <span class="circle">➟</span>
+    </a>
+
+    <!-- Hamburger -->
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+       <a href="#aboutus">About us</a>
+      <a href="#Services-sec">Services</a>
+      <a href="#Process-sec">Process</a>
+      <a href="#Projects-sec">Works</a>
+      <a href="#review-sec">Reviews</a>
+      <a href="#review-sec" class="contact-btn">
+                Contact
+        <span class="circle">
+            <i class='bx bx-right-arrow-alt'></i>
+        </span>
+    </a>
+
+    </div>
+  </nav> 
+</div>
+
+
+<section class="terms-conditions">
+  <div class="container">
+    <h1>Terms & Conditions</h1>
+
+    <h2>Normal Business Hours</h2>
+    <p>10:00am – 7:30pm IST</p>
+
+    <h2>Rates</h2>
+    <h3>2024 Maple Retail Rates</h3>
+    <p>Retail rates and discounted blended rates are subject to change yearly on or after Jan. 1 of the upcoming year-end.</p>
+
+    <ul>
+      <li>$165/hr. Sr. Strategist & Team Lead (DM, Web, Brand, PPC & Paid Social, SEO, CRO, UX/UI, Content, Video, etc.)</li>
+      <li>$145/hr. Strategist</li>
+      <li>$165/hr. Back-end Development (eCommerce, Database, Applications & Integrations)</li>
+      <li>$145/hr. Front-end Development</li>
+      <li>$145/hr. UX/UI Design & Graphic Design</li>
+      <li>$145/hr. Account & Project Management</li>
+      <li>$145/hr. Content & Copywriting</li>
+      <li>$145/hr. Specialist: SEO, CRO, Link Building & Paid Search Specialist</li>
+      <li>$145/hr. Photo & Video</li>
+      <li>$125/hr. Web Admin., Marketing Coordinator & Marketing Associate</li>
+    </ul>
+
+    <h3>Discounted Blended Rates</h3>
+    <ul>
+      <li>Retainer Rate – $140/hr. for Retainer Clients – 16+ hours/month minimum</li>
+      <li>Non-Profit Rate – $135/hr.</li>
+    </ul>
+
+    <h3>Paid Search & Social Management Rates</h3>
+    <ul>
+      <li>&lt; $4,999: $980 management fee (7 hrs/month)</li>
+      <li>$5,000 – $9,999: 17.5% of advertising spend</li>
+      <li>$10,000 – $19,999: 15% of advertising spend</li>
+      <li>$20,000 – $29,999: 12.5% of advertising spend</li>
+      <li>$30,000 – $99,999: 10% of advertising spend</li>
+      <li>$100,000 – $499,999: $10,000+ (Custom Retainers)</li>
+      <li>$500,000 – $1mm+: $20,000+ (Custom Retainers)</li>
+    </ul>
+
+    <h2>Additional Costs to Consider</h2>
+    <p>
+      This price does not include the printing or shipping of any materials. 
+      This price does not include the purchase of stock photography or video, press releases, 
+      catering, plugins, widgets, technology tools, travel expenses or any other hard costs. 
+      These items will be billed separately. Client is responsible for paying for and maintaining
+       products/subscriptions. <br> <br>
+       All attempts will be made to use royalty-free stock photography. 
+       No images will be purchased without the consent of the client. 
+       Stock photography costs can range from $15 to $500+. 
+       Efforts will be made to use the lower priced images first.
+    </p>
+    
+
+    <h2>Terms and Conditions</h2>
+    <p></p>
+    <h3>Client Will</h3>
+    <ul>
+      <li>Provide project text electronically</li>
+      <li>Provide images unless Maple retrieves them</li>
+      <li>Designate one contact person for approvals & decisions</li>
+    </ul>
+
+    <h2>Marketing</h2>
+    <p>
+      Unless specified otherwise or restricted by NDA, Maple Design reserves the right to 
+      publicize client projects in positive manner.
+    </p>
+
+    <h2>Client Logo</h2>
+    <p>
+      Client grants permission for Maple Design to display company logo in marketing materials.
+    </p>
+
+    <h2>Delivery Schedule</h2>
+    <p>Delivery is based on availability. Specific timing is not guaranteed.</p>
+
+    <h2>Legal</h2>
+    <p>
+      Agreement includes all terms herein. Disputes unresolved amicably will go to arbitration.
+    </p>
+
+    <h2>Copyright</h2>
+    <p>
+      Work is "work made for hire." Rights transfer to client after final payment.
+    </p>
+
+    <h2>Project Cancellation</h2>
+    <p>
+      Cancelled projects are invoiced for time/expenses until cancellation point.
+    </p>
+
+    <h3>Video & Photoshoot Cancellation</h3>
+    <p>
+      7-day notice required. Less than 7 days may incur up to 50% cost + expenses.
+    </p>
+
+    <h3>Meeting Cancellation</h3>
+    <p>
+      Significant meetings cancelled with less than 7 days may incur 50% cost + expenses.
+    </p>
+
+    <h2>Retainer Cancellation</h2>
+    <p>
+      Any project where payment is based on a monthly
+       schedule and not a milestone schedule is considered a “retainer.” 
+       Client can cancel this retainer with 60 days’ notice from the beginning 
+       of any calendar month. Two full months’ notice from the 1st of a calendar month is 
+       needed to cancel this contract. Therefore, the most notice needed is 90 days and the 
+       least notice needed is 60 days. For example, if notice were given on the 15th, this would
+        require approximately 75 days, if notice were given on the 5th this would require 
+        approximately 85 days, if notice were given on the 30th, this would require approximately 
+        60 days. Retainer cancellation, if given verbally or via email, requires a reply email 
+        confirming acknowledgement of cancellation. Cancellation via certified mail will also be accepted, mail to Maple, 155 Fleet St. Portsmouth, NH 03801.
+    </p>
+
+    <h2>Proposal/Estimate Expiration</h2>
+    <p>
+      Estimates valid for 30 days, after which Maple reserves right to re-estimate.
+    </p>
+  </div>
+</section>
+
+
+
+
+
+<footer class="ftr99" aria-labelledby="ftr99-title">
+  <div class="ftr99-stars" aria-hidden="true"></div>
+
+  <div class="ftr99-wrap">
+    <div class="ftr99-grid">
+      <!-- Brand / blurb -->
+      <div class="ftr99-brand">
+        <!-- Placeholder logo -->
+        <div class="logo">
+      <img src='logo-white.png' alt="Logo">
+    </div>
+
+        <p class="ftr99-blurb">
+          Empowering your digital presence with
+          innovative web solutions.
+        </p>
+      </div>
+
+      <!-- Column: Company -->
+      <nav class="ftr99-col" aria-label="Company">
+        <h3 class="ftr99-head">Company</h3>
+        <ul class="ftr99-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Works</a></li>
+        </ul>
+      </nav>
+
+      <!-- Column: Legal Pages -->
+      <nav class="ftr99-col" aria-label="Legal Pages">
+        <h3 class="ftr99-head">Legal Pages</h3>
+        <ul class="ftr99-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+        </ul>
+      </nav>
+
+      <!-- Column: Socials -->
+      <nav class="ftr99-col" aria-label="Socials">
+        <h3 class="ftr99-head">Socials</h3>
+        <ul class="ftr99-links">
+          <li><a href="#" rel="noopener">LinkedIn</a></li>
+          <li><a href="#" rel="noopener">Instagram</a></li>
+          <li><a href="#" rel="noopener">Twitter</a></li>
+          <li><a href="#" rel="noopener">Facebook</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Bottom row -->
+    <div class="ftr99-bottom">
+      © 2024 – All Rights Reserved. (Maple Web Works)
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
