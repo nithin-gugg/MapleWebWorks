@@ -1,0 +1,2539 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Single Page — Grid Background</title>
+  <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://static-bundles.visme.co" crossorigin>
+  <link rel="preconnect" href="https://forms.visme.co" crossorigin>
+  <link rel="dns-prefetch" href="//static-bundles.visme.co">
+  <link rel="dns-prefetch" href="//forms.visme.co">
+  <link rel="icon" type="image/png" href="logo-black.png">
+
+
+  <style>
+    /* ---------- Config (change these) ---------- */
+    :root{
+      --bg-color: #f8fafc;        /* page base color */
+      --line-color: rgba(0,0,0,0.04); /* grid line color (low opacity = subtle) */
+      --grid-size: 10px;         /* grid cell size */
+    }
+
+    /* ---------- Reset & layout ---------- */
+    * { box-sizing: border-box; }
+    html,body {
+         height: 100%; 
+         margin: 0; 
+         font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system,
+               "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+               "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-optical-sizing: auto;  /* variable font axis */
+   scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+         }
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-color);
+      /* === SOLID GRID (graph paper style) === */
+      background-image:
+        linear-gradient(to right, var(--line-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--line-color) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+      /* uncomment the next two lines and comment the above two to use dotted grid instead */
+      /*
+      background-image:
+        radial-gradient(var(--line-color) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+      */
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Optional: a centered container so you can see content on top of grid */
+    .wrap {
+      max-width: 980px;
+      margin: 4rem auto;
+      background: rgba(255,255,255,0.72);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 30px rgba(20,20,40,0.06);
+      backdrop-filter: blur(6px);
+      z-index: -1;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+/* Fluid font sizes using clamp(min, preferred, max) */
+h1 { font-size: clamp(1.8rem, 4vw + 1rem, 3rem); }
+h2 { font-size: clamp(1.6rem, 3vw + 0.8rem, 2.4rem); }
+h3 { font-size: clamp(1.4rem, 0.5vw + 0.1rem, 2rem); }
+h4 { font-size: clamp(1.2rem, 2vw + 0.5rem, 1.6rem); }
+h5 { font-size: clamp(1rem, 1.5vw + 0.4rem, 1.3rem); }
+h6 { font-size: clamp(0.9rem, 1.2vw + 0.3rem, 1.1rem); }
+
+p {
+  margin: 0 0 1rem 0;
+  color: #334155;
+  line-height: 1.5;
+  font-size: clamp(0.95rem, 1vw + 0.4rem, 1.125rem);
+}
+
+
+        /* small demo controls (not required) */
+.controls { display:flex; gap:8px; flex-wrap:wrap; margin-top:1rem; }
+.chip {
+    cursor: pointer;
+    border: 1px solid rgba(15,23,42,0.06);
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    }
+    .navbar-container {
+  background: #fff;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+}
+
+ .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: #fff;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      
+    }
+
+    .logo img {
+      height: 55px;
+      border-radius: 50%;
+    }
+
+    /* Nav links desktop */
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #000;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ff5100;
+    }
+
+    /* Contact button */
+    .contact-btn {
+      display: flex;
+      align-items: center;
+      background: #111;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      gap: 10px;
+    }
+
+    .contact-btn .circle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 35px;
+      height: 35px;
+      background: #fff;
+      border-radius: 50%;
+      color: #000;
+      transition: background 0.3s ease, color 0.3s ease;
+      font-size: 28px;   /* size of arrow */
+        line-height: 1;
+    }
+
+    .contact-btn:hover .circle {
+      background: #ff5100;
+      color: #fff;
+    }
+
+    /* Hamburger (hidden desktop) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #000;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      padding: 20px;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      z-index: 9999;
+    }
+
+    .mobile-menu a {
+      margin: 10px 0;
+      text-decoration: none;
+      color: #000;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .mobile-menu a:hover {
+      color: #ff5100;
+    }
+
+    .mobile-menu .contact-btn {
+      margin-top: 15px;
+      justify-content: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links, .contact-btn {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+
+/* hero section design  */
+
+/* === HERO (namespaced) === */
+.hero99{
+  position:relative;
+  padding: clamp(60px, 1.5vw, 90px) 30px;
+  /* background:#fff; */
+  overflow:hidden;
+   padding-top: 100px;
+ 
+  
+}
+/* subtle grid background */
+
+.hero99-wrap{
+  max-width:900px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: clamp(20px, 4vw, 48px);
+  align-items:center;
+  min-height: min(90vh, 900px);
+}
+
+.hero99-title{
+  margin:0 0 16px;
+  font-weight:800;
+  line-height:.98;
+  letter-spacing:-.02em;
+  font-size: clamp(38px, 4vw, 90px);
+  color:#101010;
+}
+.hero99-accent{ color:#ff5a21; }
+
+.hero99-sub{
+  margin: 8px 0 28px;
+  font-size: clamp(16px, 2vw, 18px);
+  color:#3a3a3a;
+  max-width: 50ch;
+  font-weight: 600;
+}
+
+.hero99-cta{
+  display:inline-flex; align-items:center; gap:16px;
+  background:#0e0e0e; color:#fff; text-decoration:none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight:700;
+  box-shadow: 0 18px 36px rgba(0,0,0,.25);
+  transition: transform .15s ease, filter .15s ease;
+}
+.hero99-cta:hover{ filter: brightness(1.05); transform: translateY(-1px); }
+.hero99-cta-icon{
+  display:grid; place-items:center;
+  width:36px; height:36px; border-radius:50%;
+  background:#fff; color:#0e0e0e; font-weight:800;
+}
+
+.hero99-note{
+  margin: 18px 0 0;
+  color:#8b8b8b;
+  font-size: clamp(14px, 1.6vw, 18px);
+}
+
+/* Right-side floating cards */
+.hero99-right{
+  position:relative;
+  min-height: 0px;
+}
+.hero99-card{
+  position:absolute;
+  right:0;
+  width: min(480px, 90%);
+  background:#fff;
+  border:1px solid #eee;
+  border-radius: 22px;
+  padding: 18px 22px;
+  box-shadow: 0 22px 40px rgba(0,0,0,.15);
+}
+/* Opposite bob for both cards */
+.hero99-card--top{
+  top: 0;
+  --rot: -8deg;
+  --amp: -20px;                 /* up */
+  animation: hero99-bob 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero99-card--bottom{
+  bottom: 15px;
+  --rot: 7deg;
+  --amp: 10px;                  /* down */
+  animation: hero99-bob 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes hero99-bob{
+  0%, 100% { transform: rotate(var(--rot)) translateY(0); }
+  50%      { transform: rotate(var(--rot)) translateY(var(--amp)); }
+}
+
+/* Optional: pause on hover (desktop) */
+@media (hover: hover){
+  .hero99-card--top:hover,
+  .hero99-card--bottom:hover{ animation-play-state: paused; }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce){
+  .hero99-card--top,
+  .hero99-card--bottom{ animation: none; }
+}
+
+.hero99-card-h{
+  color:#6a6a6a; font-weight:700; margin-bottom:8px;
+}
+.hero99-card-t{
+  color:#222; font-size: clamp(14px, 1.8vw, 20px);
+  margin-bottom: 12px;
+}
+.hero99-card-f{
+  display:flex; align-items:center; gap:12px; color:#444;
+}
+.hero99-badge{
+  display:inline-grid; place-items:center;
+  width:28px; height:28px; border-radius:50%;
+  background:#ff5a21; color:#fff; font-weight:800;
+}
+.hero99-reply{ margin-left:auto; color:#222; font-weight:600; }
+
+/* --- Mobile-first: stack everything --- */
+.hero99 .hero99-wrap{
+  display:grid !important;
+  grid-template-columns: 1fr !important;
+  gap: clamp(20px, 4vw, 48px);
+  align-items: start;
+  min-height: unset;
+}
+
+/* Make the right column behave like a normal block on mobile */
+.hero99 .hero99-right{
+  position: static;     /* no absolute container on mobile */
+  min-height: 0;
+  margin-top: 12px;
+  order: 0;             /* remove special ordering */
+}
+
+/* Cards: turn off absolute positioning & rotation on mobile so they stack */
+.hero99 .hero99-card{
+  position: relative;
+  right: auto; left: auto; top: auto; bottom: auto;
+  transform: none;
+  width: 100%;
+  max-width: 560px;     /* nice readable width */
+  margin: 12px auto;    /* center */
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
+}
+
+/* Keep headline readable on small screens */
+.hero99 .hero99-title{ font-size: clamp(30px, 9vw, 56px); }
+
+/* --- Tablet and up: optionally show a bit wider card --- */
+@media (min-width: 640px){
+  .hero99 .hero99-card{ max-width: 640px; }
+}
+
+/* --- Desktop: restore 2 columns and the floating/rotated cards --- */
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 80px; /* smaller navbar on mobile */
+  }
+  .hero99 {
+    padding-top: 130px;
+  }
+}
+@media (min-width: 981px){
+  .hero99 .hero99-wrap{
+    grid-template-columns: 1.2fr .8fr !important;
+    align-items: center;
+    min-height: min(90vh, 900px);
+  }
+  .hero99 .hero99-right{
+    position: relative;
+    min-height: px;
+    margin-top: 0;
+  }
+  .hero99 .hero99-card{
+    position: absolute;
+    right: 0;
+    width: min(480px, 90%);
+    margin: 0;          /* absolute elements don’t need margins */
+    box-shadow: 0 22px 40px rgba(0,0,0,.15);
+  }
+  .hero99 .hero99-card--top{ top: -10px; transform: rotate(-8deg); }
+  .hero99 .hero99-card--bottom{ bottom: -10px; transform: rotate(7deg); }
+}
+
+/* section 2 */
+
+/* Wrapper: change --max to control total width */
+.reel42{
+  --max: 900px;            /* overridden inline if you want */
+  --gap: 10px;
+  --badge-bg: #fff;
+  --badge-ink:#374151;
+  --badge-br:#e5e7eb;
+  --radius: 14px;
+  --speed: 33s;            /* marquee speed */
+  margin-inline: auto;
+  max-width: var(--max);
+  padding: 10px 12px 14px;
+}
+
+/* === badges marquee === */
+.reel42-marquee{
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid var(--badge-br);
+  background: #f9fafb;
+  padding: 8px 0;
+  /* subtle edge fade */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.reel42-track{
+  display: flex;
+  gap: var(--gap);
+  width: max-content;             /* allow content to size naturally */
+  animation: reel42-scroll var(--speed) linear infinite;
+}
+.reel42-marquee:hover .reel42-track{ animation-play-state: paused; } /* optional pause */
+
+.reel42-strip{
+  display: flex;
+  gap: var(--gap);
+  margin: 0;
+  padding: 0 6px;
+  list-style: none;
+}
+
+.reel42-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 6px 12px;
+  background: var(--badge-bg);
+  color: var(--badge-ink);
+  border: 1px solid var(--badge-br);
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06);
+  font-size: 14px;
+}
+.reel42-badge::before{
+  content:"★";
+  display:grid; place-items:center;
+  width:18px; height:18px; border-radius:999px;
+  background:#f3f4f6; color:#111827; font-weight:700; font-size:12px;
+}
+
+@keyframes reel42-scroll{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* two identical strips → -50% loops perfectly */
+}
+
+/* === video frame === */
+.reel42-video{
+  margin-top: 12px;
+  border: 1px solid var(--badge-br);
+  border-radius: var(--radius);
+  background: #111;
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  overflow: hidden;
+}
+.reel42-video-inner{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;    /* perfect height for the video */
+}
+.reel42-video iframe{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: 0; border-radius: inherit;
+}
+
+/* === Responsive tweaks === */
+@media (max-width: 640px){
+  .reel42-badge{ font-size: 13px; padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .reel42-track{ animation: none; }
+}
+
+
+/* about section design  */
+/* ===== About section (namespaced) ===== */
+.about88{
+  position: relative;
+  padding: clamp(60px, 10vw, 140px) 20px;
+ 
+  overflow:hidden;
+}
+/* centered container */
+.about88-wrap{
+  max-width: 1180px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* pill badge */
+.about88-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding: 10px 18px;
+  margin-bottom: clamp(20px, 3vw, 36px);
+  border:1px solid #e7e7e7;
+  background:#fff;
+  border-radius: 999px;
+  font-weight: 600;
+  color:#222;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+.about88-badge::before{
+  content:"•";
+  display:inline-block;
+  color:#ff5a21;
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+/* headline */
+.about88-title{
+  margin: 0 auto;
+  max-width: 1000px;
+  color:#0e0e0e;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  /* big but fluid */
+  font-size: clamp(32px, 4.4vw, 40px);
+}
+.about88-accent{ color:#ff5a21; }
+
+/* stats card */
+.about88-stats{
+  margin: clamp(28px, 8vw, 90px) auto 0;
+  width: min(520px, 95%);
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: clamp(12px, 2.5vw, 32px);
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px dashed #e6e6e6;
+  border-radius: 36px;
+  background:#fff;
+  box-shadow: 0 18px 40px rgba(0,0,0,.08);
+}
+
+.about88-stat{
+  display:grid;
+  gap: 6px;
+}
+
+.about88-num{
+  color:#ff5a21;
+  font-weight: 800;
+  font-size: clamp(26px, 3.6vw, 42px);
+}
+.about88-label{
+  color:#333;
+  font-weight: 600;
+  font-size: clamp(14px, 1.6vw, 18px);
+}
+
+/* --- Mobile stacking --- */
+@media (max-width: 680px){
+  .about88-title{
+    /* a touch smaller for small screens */
+    font-size: clamp(28px, 9vw, 50px);
+  }
+  .about88-stats{
+    grid-template-columns: 1fr; /* stack stats */
+    width: min(520px, 96%);
+  }
+}
+
+/* services */
+/* ===== Services section (namespaced) ===== */
+.svc88{
+  position: relative;
+  padding: clamp(16px, 7vw, 40px) 20px;
+  overflow: hidden;
+}
+
+/* container */
+.svc88-wrap{
+  max-width: 1120px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* badge */
+.svc88-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px;
+  border:1px solid #e7e7e7;
+  background:#fff;
+  border-radius:999px;
+  font-weight:600;
+  color:#222;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  margin-bottom: clamp(14px, 2.5vw, 22px);
+}
+.svc88-badge::before{
+  content:"✦";
+  color:#ff5a21;
+  font-weight:900;
+}
+
+/* heading + sub */
+.svc88-title{
+  margin:0 0 10px;
+  font-weight:900;
+  color:#000;
+  letter-spacing:-.02em;
+  line-height:1.06;
+  font-size: clamp(28px, 6vw, 40px);
+}
+.svc88-sub{
+  margin:0 auto clamp(22px, 4vw, 36px);
+  max-width: 760px;
+  color:#5b5b5b;
+  font-size: clamp(14px, 1.4vw, 18px);
+}
+
+/* rows wrapper: vertical gap between the two rows */
+.svc88-container{
+  display: grid;
+  row-gap: 16px;
+}
+
+/* each row: two cards side-by-side, centered */
+.svc88 .svc88-grid{
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 10px;           /* requested column gap */
+  flex-wrap: nowrap;   /* keep side-by-side on wide screens */
+  text-align: left;
+}
+
+/* card base styles */
+.svc88-card1,
+.svc88-card2{
+  background: #161616;
+  color:#eaeaea;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: clamp(18px, 3vw, 26px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.18);
+  position: relative;
+  flex: 0 0 auto;      /* respect the max-widths below on desktop */
+}
+
+/* individual max widths (desktop) */
+.svc88-card1{ max-width: 500px; }
+.svc88-card2{ max-width: 350px; }
+
+.svc88-card-title{
+  margin:0 0 8px;
+  font-weight:800;
+  font-size: clamp(18px, 2.4vw, 22px);
+  color: #ffffff;
+}
+.svc88-card-text{
+  margin:0 0 16px;
+  color:#cfcfcf;
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height:1.55;
+}
+
+/* tag pills */
+.svc88-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.svc88-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:#f1f1f1;
+  font-weight:600;
+  font-size: 13.5px;
+}
+.svc88-tag .svc88-dot{
+  width:18px; height:18px; border-radius:999px;
+  background:#1f1f1f; border:1px solid rgba(255,255,255,.16);
+  position: relative; display:inline-block;
+}
+.svc88-tag .svc88-dot::after{
+  content:"";
+  position:absolute; inset:4px;
+  border-radius:999px; background:#ff5a21;
+  box-shadow: 0 0 0 2px rgba(255,90,33,.18);
+}
+
+/* ===== Tablet (wrap to fit nicely, ~2 per row) ===== */
+@media (max-width: 1024px) and (min-width: 641px){
+  .svc88 .svc88-grid{
+    flex-wrap: wrap;     /* allow wrapping while keeping two per row */
+    gap: 12px;
+  }
+  .svc88-card1,
+  .svc88-card2{
+    flex: 1 1 46%;       /* each takes ~half row */
+    max-width: none;     /* allow growth within the row */
+  }
+}
+
+/* ===== Mobile (stacked, full width) ===== */
+@media (max-width: 640px){
+  .svc88 .svc88-grid{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;           /* vertical gap between stacked cards */
+  }
+  .svc88-card1,
+  .svc88-card2{
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 100%;     /* full width on phones */
+  }
+}
+
+/* process */
+/* ============ How It Works (proc42) ============ */
+.proc42{
+  padding: clamp(32px, 6vw, 72px) 20px;
+ 
+}
+.proc42-wrap{
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* badge */
+.proc42-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border:1px solid #eee;
+  border-radius:999px;
+  font-weight:600;
+  color:#222;
+  background:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  margin-bottom:14px;
+}
+.proc42-badge::before{
+  content:"✦";
+  color:#ff5a21;
+  font-weight:900;
+}
+
+/* heading + sub */
+.proc42-title{
+  margin:0;
+  font-weight:900;
+  letter-spacing:-.01em;
+  color:#141414;
+  font-size: clamp(28px, 5.4vw, 40px);
+}
+.proc42-sub{
+  margin:10px auto 28px;
+  max-width: 700px;
+  color:#545454;
+  font-size: clamp(14px, 1.5vw, 16px);
+  line-height:1.6;
+}
+
+/* grid */
+.proc42-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 18px;
+  text-align:left;
+}
+
+/* card */
+.proc42-card{
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #efefef;
+  border-radius: 16px;
+  box-shadow: 0 16px 34px rgba(0,0,0,.07);
+  padding: 14px 14px 18px;
+  overflow: hidden;
+}
+
+/* small step badge */
+.proc42-step{
+  position:absolute;
+  top: 10px; left: 12px;
+  font-size:12px; font-weight:700; color:#444;
+  background:#f7f7f9;
+  border:1px solid #e7e7ef;
+  border-radius:8px;
+  padding:4px 8px;
+}
+
+/* illustration area (soft glow bg) */
+.proc42-art{
+  position: relative;
+  height: 160px;
+  margin: 28px 6px 10px;
+  border-radius: 12px;
+  background:
+    radial-gradient(120px 80px at 30% 70%, rgba(255,138,51,.20), transparent 60%),
+    radial-gradient(130px 90px at 70% 30%, rgba(72,125,255,.18), transparent 60%),
+    linear-gradient(#fafbff, #f8f8fe);
+  border:1px solid #f0f0f8;
+  overflow:hidden;
+}
+.proc42-art::after{
+  content:"";
+  position:absolute; inset:0;
+  box-shadow: inset 0 0 60px rgba(255,255,255,.7);
+  border-radius:12px;
+  pointer-events:none;
+}
+
+/* generic tiny dots (card 1) */
+.proc42-dot{
+  position:absolute; width:18px; height:18px; border-radius:50%;
+  background:#fff; border:1px solid #e8e8f4;
+  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+}
+.proc42-dot:nth-child(1){ left:22%; top:32%; }
+.proc42-dot:nth-child(2){ left:42%; top:52%; }
+.proc42-dot:nth-child(3){ right:16%; top:38%; background:#ff6a2d; border-color:#ffc7b0; }
+
+/* chips & pills for other cards */
+.proc42-chip{
+  position:absolute;
+  display:inline-block;
+  background:#1f1f1f; color:#fff;
+  font-size:12px; padding:6px 10px; border-radius:999px;
+  box-shadow:0 10px 18px rgba(0,0,0,.18);
+}
+.proc42-chip:nth-child(1){ left:20%; top:24%; }
+.proc42-chip:nth-child(2){ left:38%; top:50%; background:#4b6bff; }
+.proc42-chip:nth-child(3){ right:14%; top:28%; background:#ff6a2d; }
+
+/* sticker & ribbon (card 3) */
+.proc42-sticker{
+  position:absolute; left:20%; top:28%;
+  background:#fff; border:1px dashed #ffbda0; color:#f06a2b;
+  font-size:12px; padding:6px 10px; border-radius:8px;
+  transform: rotate(-3deg);
+  box-shadow:0 10px 18px rgba(0,0,0,.12);
+}
+.proc42-ribbon{
+  position:absolute; left:38%; top:56%;
+  background:#ff6420; color:#fff; font-weight:700;
+  font-size:12px; padding:6px 12px; border-radius:10px;
+  transform: rotate(-12deg);
+  box-shadow:0 14px 22px rgba(255,100,32,.25);
+}
+
+/* publish pill (card 4) */
+.proc42-pill{
+  position:absolute; right:18%; top:54%;
+  background:#ff6420; color:#fff; font-weight:700;
+  font-size:12px; padding:7px 12px; border-radius:999px;
+  box-shadow:0 14px 22px rgba(255,100,32,.25);
+}
+
+/* text */
+.proc42-h3{
+  margin:8px 2px 6px;
+  font-size: clamp(16px, 2.2vw, 18px);
+  font-weight:700; color:#141414;
+}
+.proc42-p{
+  margin:0 2px;
+  color:#5a5a6a;
+  font-size: clamp(13.5px, 1.6vw, 15px);
+  line-height:1.55;
+}
+.proc42-p strong{ color:#222; }
+
+/* responsive */
+@media (max-width: 860px){
+  .proc42-grid{ grid-template-columns: 1fr; }
+  .proc42-card{ padding: 12px; }
+  .proc42-art{ height: 150px; }
+}
+
+
+/* Base Section */
+.projects-section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.projects-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.projects-title {
+  font-size: clamp(2rem, 4vw, 40px);
+  font-weight: 800;
+  color: #111;
+}
+
+.projects-subtitle {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: #555;
+  margin-bottom: 40px;
+}
+
+/* Cards grid */
+.projects-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.project-card {
+  width: calc(50% - 10px);
+  max-width: 400px;
+  background-color: #000;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.project-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.4s ease-in-out; /* smooth animation */
+}
+
+.project-card:hover img {
+  transform: scale(1.08); /* scale up on hover */
+}
+
+.project-info {
+  background-color: #111;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.project-info h3 {
+  font-size: 1rem;
+  margin: 15px 0;
+  color: #ffffff;
+}
+
+.open-btn {
+  background-color: #2d2d2d;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.open-btn:hover {
+  background-color: #e84900;
+}
+
+/* Hidden extra cards */
+.extra-projects {
+  display: none;
+  margin-top: 40px;
+}
+
+.extra-projects .project-card {
+  width: calc(50% - 10px);
+}
+
+.explore-btn {
+  margin-top: 30px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border: none;
+  background-color: #000;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.explore-btn:hover {
+  background-color: #0f6c58;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .project-card {
+    width: 100%;
+    max-width: none;
+  }
+
+  .projects-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .extra-projects .project-card {
+    width: 100%;
+  }
+
+  .explore-btn {
+    display: block;
+    margin: 40px auto;
+  }
+}
+.extra-projects {
+  display: none;           /* hidden by default */
+  margin-top: 40px;
+}
+
+.extra-projects.show {
+  display: flex;           /* or grid, if you prefer */
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+ .section-101 {
+      text-align: center;
+      padding: 60px 20px;
+      /* background: #fff; */
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    .section-101 h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #111;
+    }
+
+    .section-101 p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    .cards-container-101 {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card-101 {
+      flex: 1 1 45%;
+      border-radius: 12px;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    .card-101 h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .card-101 ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .card-101 ul li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .card-101 ul li span {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+      font-size: 14px;
+    }
+
+    /* Problems card */
+    .problems-101 {
+      background: #fff;
+      border: 1px solid #eee;
+      color: #111;
+    }
+
+    .problems-101 h3 {
+      color: #000;
+    }
+
+    .problems-101 ul li span {
+      background: #ffe5e5;
+      color: #ff4d4d;
+    }
+
+    /* Solutions card */
+    .solutions-101 {
+      background: #111;
+      color: #fff;
+    }
+
+    .solutions-101 h3 {
+      color: #ff4d00;
+    }
+
+    .solutions-101 ul li span {
+      background: #ff4d00;
+      color: #fff;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cards-container-101 {
+        flex-direction: column;
+      }
+      .card-101 {
+        flex: 1 1 100%;
+        text-align: start;
+      }
+    }
+/* reviews style  */
+  .reviews-section-202 {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .reviews-header-202 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .reviews-header-202 h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .reviews-header-202 p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .reviews-container-202 {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    /* Left column */
+    .reviews-left-202 {
+      flex: 2;
+      position: relative;
+      max-width: 450px;
+    }
+
+    .review-card-202 {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: sticky;
+      top: 100px; /* stick position */
+      z-index: 1;
+    }
+
+    .review-card-202 h4 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* Right column */
+    .reviews-right-202 {
+      flex: 1;
+      position: sticky;
+      top: 100px;
+    }
+
+    .call-box-202 {
+      background: #111;
+      color: #fff;
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .call-box-202 img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+
+    .call-box-202 h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .call-box-202 button {
+      padding: 12px 24px;
+      border-radius: 30px;
+      border: none;
+      background: #ff4d00;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    .call-box-202 p {
+      font-size: 0.9rem;
+      color: #ddd;
+      margin-bottom: 10px;
+    }
+
+    .call-box-202 a {
+      color: #fff;
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+
+    /* Overlapping effect */
+    .review-card-202:nth-child(1) { z-index: 1; }
+    .review-card-202:nth-child(2) { z-index: 2; }
+    .review-card-202:nth-child(3) { z-index: 3; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .reviews-container-202 {
+        flex-direction: column;
+        align-items: center;
+      }
+      .reviews-right-202 {
+        position: relative;
+        top: auto;
+        margin-top: 20px;
+      }
+    }
+    
+  /* CTA  */
+  .cta-section-303 {
+      background: #111;
+      border-radius: 20px;
+      padding: 60px 20px;
+      text-align: center;
+      max-width: 900px;
+      margin: 40px auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section-303 h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    .cta-section-303 p {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 30px;
+    }
+
+    .cta-button-303 {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #111;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 40px;
+      padding: 14px 28px;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button-303 span {
+      display: inline-block;
+      margin-left: 12px;
+      background: #ff4d00;
+      color: #fff;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .cta-button-303:hover {
+      background: #f2f2f2;
+    }
+
+    /* Floating badges */
+    .badge-303 {
+      position: absolute;
+      background: #222;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .badge-orange-303 {
+      background: #ff4d00;
+      color: #fff;
+    }
+
+    .badge-1-303 { bottom: 10px; left: 10px; transform: rotate(-15deg); }
+    .badge-2-303 { bottom: 10px; left: 140px; }
+    .badge-3-303 { bottom: 10px; right: 160px; transform: rotate(10deg); }
+    .badge-4-303 { bottom: 10px; right: 10px; transform: rotate(-10deg); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cta-section-303 {
+        padding: 40px 20px 80px;
+      }
+      .cta-section-303 h2 {
+        font-size: 1.8rem;
+      }
+      .badge-1-303, .badge-2-303, .badge-3-303, .badge-4-303 {
+        position: static;
+        display: inline-block;
+        margin: 10px 6px;
+        transform: none;
+      }
+    }
+    /* Centered embed card with a subtle reveal */
+.cta-embed-303{
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto 26px;
+  min-height: 500px;               /* desktop min height */
+  border-radius: 12px;
+  overflow: visible;
+
+  opacity: 0;
+  transform: translateY(16px) scale(.985);
+  transition: opacity .6s cubic-bezier(.215,.61,.355,1),
+              transform .6s cubic-bezier(.215,.61,.355,1);
+}
+.cta-section-303.in .cta-embed-303{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@media (max-width: 768px){
+  .cta-embed-303{ min-height: 600px; } /* match mobile embed */
+}
+
+    
+
+    /* ===== Footer (namespaced) ===== */
+.ftr99{
+  position: relative;
+  background: #000;           /* deep black */
+  color: #eaeaea;
+  overflow: clip;
+  padding: 56px 20px 40px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* faint star field */
+.ftr99-stars{
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,.45) 50%, transparent 51%) 0 0/180px 180px,
+    radial-gradient(1.5px 1.5px at 40% 60%, rgba(255,255,255,.35) 50%, transparent 51%) 0 0/220px 220px,
+    radial-gradient(1.2px 1.2px at 75% 30%, rgba(255,255,255,.35) 50%, transparent 51%) 0 0/260px 260px;
+  opacity: .35;
+  pointer-events: none;
+}
+
+/* content wrapper */
+.ftr99-wrap{
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* top grid: brand takes more space, 3 link cols equal */
+.ftr99-grid{
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: clamp(24px, 3vw, 60px);
+  align-items: start;
+}
+
+/* brand block */
+.ftr99-brand{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "logo logo"
+    "blurb blurb";
+  gap: 18px 16px;
+}
+
+.ftr99-logo{
+  grid-area: logo;
+  display:inline-block;
+  width: 120px;
+  height: 120px;
+}
+.ftr99-logo svg{ width:100%; height:100%; }
+
+.ftr99-blurb{
+  grid-area: blurb;
+  max-width: 520px;
+  margin: 0;
+  color: #d9d9d9;
+  font-size: clamp(16px, 1.5vw, 20px);
+  line-height: 1.55;
+}
+
+/* link columns */
+
+.ftr99-head{
+  margin: 0 0 14px;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 700;
+  color: #b9b9b9;             /* muted head like screenshot */
+}
+.ftr99-links{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.ftr99-links a{
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: clamp(16px, 1.4vw, 20px);
+  letter-spacing: .2px;
+}
+.ftr99-links a:hover{ color: #ffffff; text-decoration: underline; }
+
+/* bottom row */
+.ftr99-bottom {
+  margin-top: clamp(40px, 5vw, 64px);
+  color: #bdbdbd;
+  font-size: 15px;
+  text-align: center; /* center everything */
+}
+
+.certifications-99 {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* spacing between logos */
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.cert-box-99 {
+  width: 80px;
+  height: 80px;
+  background: #222; /* optional dark box background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px; /* slight rounded corners */
+  overflow: hidden;
+}
+
+.cert-box-99 img {
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: contain;
+}
+
+
+/* ===== Responsive ===== */
+@media (max-width: 1000px){
+  .ftr99-grid{
+    grid-template-columns: 1fr 1fr;   /* 2 columns on tablets */
+  }
+  .ftr99-brand{
+    grid-column: 1 / -1;              /* brand spans full width */
+  }
+}
+
+@media (max-width: 640px){
+  .ftr99{
+    padding: 40px 16px 28px;
+  }
+  .ftr99-grid{
+    grid-template-columns: 1fr;       /* stack all */
+    gap: 28px;
+    text-align: left;                 /* keep left-aligned like design */
+  }
+  .ftr99-logo{ width: 100px; height: 100px; }
+  .ftr99-bottom{
+    text-align: left;
+    margin-top: 24px;
+  }
+}
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111; /* darker background */
+  color: #fff;
+  padding: 15px;
+  z-index: 10000;
+  display: none;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.6);
+}
+.cookie-buttons button {
+  margin: 5px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.cookie-buttons button:hover {
+  opacity: 0.9;
+}
+#accept-all { background: #ff5100; color: #fff; }
+#reject-all { background: #333; color: #fff; }
+#customize  { background: transparent; color: #ff5100; border: 1px solid #ff5100; }
+
+/* Modal */
+.cookie-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 10001;
+  justify-content: center;
+  align-items: center;
+}
+.cookie-modal-content {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 420px;
+  width: 90%;
+  text-align: left;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+  color: #fff;
+}
+.cookie-modal-content h3 {
+  margin-bottom: 15px;
+  color: #ff5100;
+}
+.cookie-actions {
+  margin-top: 15px;
+  text-align: right;
+}
+.cookie-actions button {
+  background: #ff5100;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.cookie-actions button:hover {
+  background: #e04900;
+}
+
+.cookie-settings-btn{
+  color: #ffffff;
+  background-color: #000;
+  border: none;
+  font-size: clamp(16px, 1.4vw, 20px);
+  padding: 0;
+  cursor: pointer;
+  text-decoration: dashed;
+}
+/* hidden state */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+/* when in view */
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+  </style>
+</head>
+<body>
+
+    <div class="navbar-container">
+  <nav class="navbar">
+    <!-- Logo -->
+    <div class="logo">
+      <a href="#Home">
+      <img src="images/logo-black.png" alt="Logo">
+      </a>
+    </div>
+
+    <!-- Desktop links -->
+    <div class="nav-links">
+      <a href="#aboutus">About us</a>
+      <a href="#Services-sec">Services</a>
+      <a href="#Process-sec">Process</a>
+      <a href="#Projects-sec">Works</a>
+      <a href="#review-sec">Reviews</a>
+    </div>
+
+    <!-- Desktop button -->
+    <a href="#Contact-us" class="contact-btn">
+      Contact
+      <span class="circle">➜</span>
+    </a>
+
+    <!-- Hamburger -->
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+       <a href="#aboutus">About us</a>
+      <a href="#Services-sec">Services</a>
+      <a href="#Process-sec">Process</a>
+      <a href="#Projects-sec">Works</a>
+      <a href="#review-sec">Reviews</a>
+      <a href="#Contact-us" class="contact-btn">
+                Contact
+        <span class="circle">
+            <i class='bx bx-right-arrow-alt'></i>
+        </span>
+    </a>
+
+    </div>
+  </nav> 
+</div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+    const mobileLinks = document.querySelectorAll('.mobile-menu a');
+const mobileMenu = document.querySelector('.mobile-menu');
+
+mobileLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.style.display = 'none'; // hide menu
+  });
+});
+
+   </script>
+   
+   
+   <!-- Hero Section -->
+
+   <section id="Home" class="hero99" aria-label="Primary hero">
+  <div class="hero99-wrap">
+    <!-- Left: headline, subcopy, CTA -->
+    <div class="hero99-left">
+      <h1 class="hero99-title reveal">
+        Crafting Beautiful,<br>
+        Functional Websites<br>
+        That <span class="hero99-accent reveal">Stand Out!</span>
+      </h1>
+
+      <p class="hero99-sub reveal">
+        Hook faster. Edit smarter. Grow your audience with
+        scroll-stopping YouTube videos.
+      </p>
+
+      <a class="hero99-cta reveal" href="#contact" aria-label="Book a call">
+        <span>Book a Call</span>
+        <span class="hero99-cta-icon" aria-hidden="true">➟</span>
+      </a>
+
+      <p class="hero99-note reveal">No pressure, just possibilities.</p>
+    </div>
+
+    <!-- Right: floating review cards -->
+    <div class="hero99-right" aria-hidden="true">
+      <div class="hero99-card hero99-card--top reveal">
+        <div class="hero99-card-h">@yuvakumar</div>
+        <div class="hero99-card-t">Clean design, fast delivery!</div>
+        <div class="hero99-card-f">
+          <span>👍</span><span>💬</span>
+          <span class="hero99-badge">★</span>
+          <span class="hero99-reply">Reply</span>
+        </div>
+      </div>
+
+      <div class="hero99-card hero99-card--bottom reveal">
+        <div class="hero99-card-h">Subhasree</div>
+        <div class="hero99-card-t">Highly professional and reliable.</div>
+        <div class="hero99-card-f">
+          <span>👍</span><span>💬</span>
+          <span class="hero99-badge">★</span>
+          <span class="hero99-reply">Reply</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+ <!-- Badges + Video Section -->
+<div class="reel42" style="--max: 900px;">
+  <!-- badges carousel -->
+  <div class="reel42-marquee" aria-label="Highlights">
+    <div class="reel42-track">
+      <!-- strip #1 -->
+      <ul class="reel42-strip">
+        <li class="reel42-badge">2× Engagement Boost</li>
+        <li class="reel42-badge">4.9★ Stars Rating</li>
+        <li class="reel42-badge">Creative Minds working together</li>
+        <li class="reel42-badge">5 years in industry</li>
+        <li class="reel42-badge">Fast Delivery</li>
+        <li class="reel42-badge">100+ Websites Delivered</li>
+      </ul>
+      <!-- strip #2 (duplicate for seamless loop) -->
+      <ul class="reel42-strip" aria-hidden="true">
+        <li class="reel42-badge">2× Engagement Boost</li>
+        <li class="reel42-badge">4.9★ Stars Rating</li>
+        <li class="reel42-badge">Creative Minds working together</li>
+        <li class="reel42-badge">5 years in industry</li>
+        <li class="reel42-badge">Fast Delivery</li>
+        <li class="reel42-badge">100+ Websites Delivered</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- video -->
+  <div class="reel42-video reveal">
+    <div class="reel42-video-inner">
+      <iframe
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        title="Showreel"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- about section  -->
+
+<!-- About / Hero copy -->
+<section id="aboutus" class="about88" aria-label="About section">
+  <div class="about88-wrap"><!-- parent wrapper -->
+
+    <!-- small pill badge -->
+     <div class="svc88-badge reveal">About us</div>
+
+    <!-- big headline -->
+    <h3 class="about88-title reveal">
+      We’re the <span class="about88-accent">Creative Engine</span> Behind Brands <br>
+      That Grow. <br> <span class="about88-accent">Fast, Strategic,</span> and Built to
+      Last.
+    </h3>
+
+    <!-- stats card -->
+    <div class="about88-stats reveal">
+      <div class="about88-stat">
+        <div class="about88-num reveal">100+</div>
+        <div class="about88-label reveal">Projects Delivered</div>
+      </div>
+      <div class="about88-stat">
+        <div class="about88-num reveal">100%</div>
+        <div class="about88-label reveal">Happy Customers</div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+(() => {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = document.querySelectorAll('.about88-num');
+
+  // Parse end value and suffix from text or data-target (e.g. data-target="100+")
+  function parse(el){
+    const raw = (el.dataset.target ?? el.textContent).trim();
+    const m = raw.match(/^(-?\d+(?:\.\d+)?)(.*)$/); // number + anything (suffix)
+    const end = m ? parseFloat(m[1]) : 0;
+    const suffix = m ? m[2] : "";
+    const decimals = m && m[1].includes(".") ? m[1].split(".")[1].length : 0;
+    return { end, suffix, decimals };
+  }
+
+  function format(n, decimals){
+    return n.toLocaleString(undefined, {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    });
+  }
+
+  function animateCount(el){
+    const { end, suffix, decimals } = parse(el);
+    const duration = parseInt(el.dataset.duration || 1200, 10); // ms
+    const start = 0;
+    const t0 = performance.now();
+
+    function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+    function frame(now){
+      const p = Math.min((now - t0) / duration, 1);
+      const val = start + (end - start) * easeOutCubic(p);
+      el.textContent = format(val, decimals) + suffix;
+      if (p < 1) requestAnimationFrame(frame);
+      else el.textContent = format(end, decimals) + suffix; // snap to final
+    }
+    requestAnimationFrame(frame);
+  }
+
+  if (prefersReduced){
+    // No animation: snap to final value
+    els.forEach(el => {
+      const { end, suffix, decimals } = parse(el);
+      el.textContent = format(end, decimals) + suffix;
+    });
+    return;
+  }
+
+  // Start when in view
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        animateCount(entry.target);
+        io.unobserve(entry.target); // run once
+      }
+    });
+  }, { threshold: 0.35 });
+
+  els.forEach(el => io.observe(el));
+})();
+</script>
+</section>
+
+
+<!-- services -->
+ <section id="Services-sec" class="svc88" aria-label="Services">
+  <div class="svc88-wrap"><!-- PARENT WRAPPER -->
+
+    <!-- pill badge -->
+    <div class="svc88-badge reveal">Services</div>
+
+    <!-- heading + sub -->
+    <h2 class="svc88-title reveal">What We Do Best</h2>
+    <p class="svc88-sub reveal">
+      We craft scroll-stopping edits that keep your audience
+      hooked and your content looking top-tier.
+    </p>
+
+    <!-- cards grid -->
+    <!-- cards container -->
+<div class="svc88-container">
+  <div class="svc88-grid">
+    <!-- Card 1 -->
+    <article class="svc88-card1 reveal">
+      <h3 class="svc88-card-title">Custom Website Development</h3>
+      <p class="svc88-card-text">
+        We build high-performing websites tailored to your brand and
+        goals — clean code, fast load times, and fully responsive across
+        devices.
+      </p>
+      <div class="svc88-tags">
+        <span class="svc88-tag"><b class="svc88-dot"></b>Performance-First</span>
+        <span class="svc88-tag"><b class="svc88-dot"></b>Cross-Device Ready</span>
+        <span class="svc88-tag"><b class="svc88-dot"></b>SEO-Friendly</span>
+      </div>
+    </article>
+
+    <!-- Card 2 -->
+    <article class="svc88-card2 reveal">
+      <h3 class="svc88-card-title">UI/UX Web Design</h3>
+      <p class="svc88-card-text">
+        Beautiful, user-centered interfaces designed to engage, convert,
+        and deliver smooth digital experiences across the web.
+      </p>
+      <div class="svc88-tags">
+        <span class="svc88-tag"><b class="svc88-dot"></b>Pixel Perfect</span>
+        <span class="svc88-tag"><b class="svc88-dot"></b>User-Centered</span>
+      </div>
+    </article>
+  </div>
+
+  <div class="svc88-grid">
+    <!-- Card 3 -->
+    <article class="svc88-card2 reveal">
+      <h3 class="svc88-card-title">Small Business & Startup Sites</h3>
+      <p class="svc88-card-text">
+        Need something lean, fast, and effective? We create lightweight,
+        impactful websites tailored for startups and small business needs.
+      </p>
+      <div class="svc88-tags">
+        <span class="svc88-tag"><b class="svc88-dot"></b>Fast Launch</span>
+        <span class="svc88-tag"><b class="svc88-dot"></b>Mobile-Optimized</span>
+      </div>
+    </article>
+
+    <!-- Card 4 -->
+    <article class="svc88-card1 reveal">
+      <h3 class="svc88-card-title">CMS & WordPress Development</h3>
+      <p class="svc88-card-text">
+        We develop flexible, scalable websites with WordPress and other
+        CMS tools — including custom themes, plugins, and easy-to-manage
+        admin panels.
+      </p>
+      <div class="svc88-tags">
+        <span class="svc88-tag"><b class="svc88-dot"></b>Custom Themes</span>
+        <span class="svc88-tag"><b class="svc88-dot"></b>Plugin-Optimized</span>
+        <span class="svc88-tag"><b class="svc88-dot"></b>Scalable Setup</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<section id="Process-sec" class="proc42" aria-labelledby="proc42-title">
+  <div class="proc42-wrap">
+    <!-- eyebrow / badge -->
+    <div class="proc42-badge reveal">Process</div>
+
+    <!-- heading & subcopy -->
+    <h2 id="proc42-title" class="proc42-title reveal">How It Works?</h2>
+    <p class="proc42-sub reveal">
+      A quick overview of how we work together to make your
+      website best in class!
+    </p>
+
+    <!-- cards -->
+    <div class="proc42-grid">
+      <!-- Card 1 -->
+      <article class="proc42-card reveal">
+        <span class="proc42-step">01</span>
+        <div class="proc42-art" aria-hidden="true">
+          <!-- illustration placeholders -->
+          <span class="proc42-dot"></span>
+          <span class="proc42-dot"></span>
+          <span class="proc42-dot"></span>
+        </div>
+        <h3 class="proc42-h3">Share Your Vision</h3>
+        <p class="proc42-p">
+          <strong>Tell us what you’re looking for</strong> — via a quick form or a
+          short call. Send references, moodboards, or any ideas.
+        </p>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="proc42-card reveal">
+        <span class="proc42-step">02</span>
+        <div class="proc42-art" aria-hidden="true">
+          <span class="proc42-chip">Design</span>
+          <span class="proc42-chip">Assets</span>
+          <span class="proc42-chip">Final</span>
+        </div>
+        <h3 class="proc42-h3">We Start Building</h3>
+        <p class="proc42-p">
+          <strong>Our dev team gets to work.</strong> We’ll create a fully responsive,
+          performance-optimized website, iterating fast.
+        </p>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="proc42-card reveal">
+        <span class="proc42-step">03</span>
+        <div class="proc42-art" aria-hidden="true">
+          <span class="proc42-sticker">Requested a Revision</span>
+          <span class="proc42-ribbon">Revision in progress!</span>
+        </div>
+        <h3 class="proc42-h3">Review & Refine</h3>
+        <p class="proc42-p">
+          <strong>You check it out, we polish it.</strong> We offer feedback rounds so
+          you get exactly what you need.
+        </p>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="proc42-card reveal">
+        <span class="proc42-step">04</span>
+        <div class="proc42-art" aria-hidden="true">
+          <span class="proc42-chip">Final_Cut_v2.mp4</span>
+          <span class="proc42-chip">Thumbnail.png</span>
+          <span class="proc42-pill">Publish</span>
+        </div>
+        <h3 class="proc42-h3">Launch & Handoff</h3>
+        <p class="proc42-p">
+          <strong>Once you’re happy, we go live!</strong> You get the final site
+          deployed + CMS access + training if needed.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section id="Projects-sec" class="projects-section">
+  <div class="projects-container">
+    <div class="svc88-badge reveal">Projects</div>
+    <h3 class="projects-title reveal">Our Recent Creativity in Action</h3>
+    <p class="projects-subtitle reveal">
+      From tech reviews to gameplay breakdowns — here’s a glimpse of how we turn raw footage.
+    </p>
+
+    <!-- Card grid container -->
+    <div class="projects-grid">
+      <!-- Card 1 -->
+      <div class="project-card reveal">
+        <a href="https://www.koio.co/" style="text-decoration: none;">
+          <img src="https://framerusercontent.com/images/p3la5ETXsyJiUSfxQ2dV6kWdpVs.png?scale-down-to=1024" alt="KOIO Project" />
+          <div class="project-info">
+            <h3>KOIO</h3>
+            <button class="open-btn">Open ➝</button>
+          </div>
+        </a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="project-card reveal">
+        <a href="https://www.onepercentfortheplanet.org/" style="text-decoration: none;"><img src="https://framerusercontent.com/images/0YzCMxaSMGzVhwAth1njO5JLo.png?scale-down-to=1024" alt="One Percent for the Planet" />
+        <div class="project-info">
+          <h3>One Percent for the Planet</h3>
+          <button class="open-btn">Open ➜</button>
+        </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Explore button to show more projects -->
+    <button id="exploreBtn" class="explore-btn">Explore projects ➜</button>
+
+    <!-- Hidden cards container -->
+    <div id="extraProjects" class="extra-projects">
+      <div class="project-card reveal">
+        <a href="https://matteprojects.com/" style="text-decoration: none;"><img src="https://framerusercontent.com/images/aanSMSnXl8oHQVUGs2YSODT7LhM.png?scale-down-to=512" alt="Project 3" />
+        <div class="project-info">
+          <h3>Matte Projects</h3>
+          <button class="open-btn">Open ➜</button>
+        </div>
+        </a>
+      </div>
+
+      <div class="project-card reveal">
+        <a href="https://www.thevisualhouse.in/" style="text-decoration: none;"><img src="https://framerusercontent.com/images/WpSezjKpLd2RvsPuZpqIq6J9E.png?scale-down-to=512" alt="Project 4" />
+        <div class="project-info">
+          <h3>The Visual House</h3>
+          <button class="open-btn">Open ➜</button>
+        </div>
+        </a>
+      </div>
+
+      <div class="project-card reveal">
+        <a href="https://www.analogydesign.co/" style="text-decoration: none;"><img src="https://framerusercontent.com/images/wHglP4w71tuxaZ9EOIeVuVEZJyU.png?scale-down-to=512" alt="Project 5" />
+        <div class="project-info">
+          <h3>Analogy Design</h3>
+          <button class="open-btn">Open ➜</button>
+        </div>
+        </a>
+      </div>
+
+      <div class="project-card reveal">
+        <a href="https://exclusivemacrepair.com/" style="text-decoration: none;"><img src="images/exlusiveMacrepair.png"  alt="Project 6" />
+        <div class="project-info">
+          <h3>Exclusivemacrepair</h3>
+          <button class="open-btn">Open ➜</button>
+        </div>
+        </a>
+      </div>
+      <div class="project-card reveal">
+        <a href="https://iqlife.ai/" style="text-decoration: none;"><img src="images/iqlife.png"  alt="Project 6" />
+        <div class="project-info">
+          <h3>IQ Life</h3>
+          <button class="open-btn">Open ➜</button>
+        </div>
+        </a>
+      </div>
+      <div class="project-card reveal">
+        <a href="https://kairosols.com/" style="text-decoration: none;"> <img src="images/kairosols.png"  alt="Project 6" />
+        <div class="project-info">
+          <h3>kairosols</h3>
+          <button class="open-btn">Open ➜</button>
+        </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const btn = document.getElementById('exploreBtn');
+  const extra = document.getElementById('extraProjects');
+
+  btn.addEventListener('click', () => {
+    extra.classList.add('show');          // reveal the 4 cards
+    extra.setAttribute('aria-hidden', 'false');
+    btn.style.display = 'none';           // hide the button
+    btn.setAttribute('aria-expanded', 'true');
+  });
+</script>
+
+<!-- our solution  -->
+ <section class="section-101">
+    <div class="svc88-badge reveal">Our Solution</div>
+    <h2 class="reveal">Why Most Creators Burn Out</h2>
+    <p class="reveal">A quick side-by-side of the struggles you shouldn’t have to deal with and how we make sure you don’t.</p>
+
+    <div class="cards-container-101">
+      <!-- Problems -->
+      <div class="card-101 problems-101 reveal">
+        <h3 class="reveal">Creators Problem</h3>
+        <ul class="reveal">
+          <li><span>✖</span> Looks outdated or off-brand</li>
+          <li><span>✖</span> Loads too slowly and hurts SEO</li>
+          <li><span>✖</span> Hard to update without a developer</li>
+          <li><span>✖</span> Poor mobile experience</li>
+          <li><span>✖</span> Confusing navigation or weak UX</li>
+        </ul>
+      </div>
+
+      <!-- Solutions -->
+      <div class="card-101 solutions-101 reveal">
+        <h3 class="reveal">Our Solution</h3>
+        <ul class="reveal">
+          <li><span>✔</span> Custom-built for your brand — clean</li>
+          <li><span>✔</span> Optimized for performance and Google</li>
+          <li><span>✔</span> No-code editing or CMS access for easy</li>
+          <li><span>✔</span> Fully responsive across devices</li>
+          <li><span>✔</span> Clear structure, smooth user flow, CTA</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- reviews section  -->
+    <section id="review-sec" class="reviews-section-202">
+    <div class="reviews-header-202">
+      <div class="proc42-badge reveal">Reviews</div>
+      <h2 class="reveal">Loved by Creators</h2>
+      <p class="reveal">We don’t just deliver edits — we make creators look good, grow faster, and stay consistent.</p>
+    </div>
+
+    <div class="reviews-container-202">
+      <!-- Left side cards -->
+      <div class="reviews-left-202">
+        <div class="review-card-202 reveal">
+          <h4>Yuva Kumar</h4>
+          <p>Working with Maple Webworks was an absolute breeze. They understood our vision, delivered a stunning website, and ensured it was mobile–responsive and lightning fast. Highly recommended for anyone serious about building a strong online presence.</p>
+        </div>
+        <div class="review-card-202 reveal">
+          <h4>Rohith</h4>
+          <p>Maple Webworks redesigned our outdated site into something modern, sleek, and SEO–optimized. Their team was professional, communicative, and delivered on time. The results speak for themselves!</p>
+        </div>
+        <div class="review-card-202 reveal">
+          <h4>Subhasree</h4>
+          <p>They don’t just build websites — they craft digital experiences. Maple Webworks created a clean, scalable platform for our online courses, and integrated everything seamlessly. Superb work.</p>
+        </div>
+      </div>
+
+      <!-- Right side sticky call box -->
+      <div class="reviews-right-202">
+        <div class="call-box-202 reveal">
+          <img src="bitemoji.avif" alt="Profile">
+          <h3 style="color: #fff;font-size: 32px;" class="reveal">Book a 15–min intro call</h3>
+          <button>Book a Call →</button>
+          <p>Prefer to Email?</p>
+          <a style="color: orangered;" href="mailto:hello@maplewebworks.com">hello@maplewebworks.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CTA  -->
+ <section id="Contact-us" class="cta-section-303">
+    <h2 style="color: #fff;" class="reveal">Ready to Level Up?</h2>
+    <p class="reveal">Whether it’s a one-off edit or a full channel transformation, <br>
+      we’re ready when you are. Let’s talk ideas.</p>
+    <!-- Embed placeholder -->
+<div id="cta303-embed" class="cta-embed-303" aria-live="polite"></div>
+
+
+    <!-- Floating Badges -->
+    <div class="badge-303 badge-1-303">From meh to wow!</div>
+    <div class="badge-303 badge-orange-303 badge-2-303">No Editor? No Problem</div>
+    <div class="badge-303 badge-3-303">Watch Time Wins</div>
+    <div class="badge-303 badge-orange-303 badge-4-303">Conversion Boost</div>
+    <div class="badge-303 badge-4-303">Low Views? Fixed</div>
+  </section>
+<script>
+(function(){
+  const section = document.querySelector('.cta-section-303');
+  const spot    = document.getElementById('cta303-embed');
+  if (!section || !spot) return;
+
+  const desktopEmbed = `
+    <div class="visme_d"
+      data-title="Contact Me Contact Form"
+      data-url="nmndk863-untitled-project"
+      data-domain="forms"
+      data-full-page="false"
+      data-min-height="500px"
+      data-form-id="147361"></div>`;
+
+  const mobileEmbed = `
+    <div class="visme_d"
+      data-title="Contact Me Contact Form"
+      data-url="nmndk863-untitled-project?sidebar=true"
+      data-domain="forms"
+      data-full-page="false"
+      data-min-height="600px"
+      data-form-id="147361"></div>`;
+
+  function ensureVismeScript(){
+    if (!document.querySelector('script[src*="vismeforms-embed.js"]')) {
+      const s = document.createElement('script');
+      s.src   = "https://static-bundles.visme.co/forms/vismeforms-embed.js";
+      s.defer = true;
+      document.body.appendChild(s);
+    }
+  }
+
+  const io = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(entry=>{
+      if (entry.isIntersecting) {
+        section.classList.add('in');
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        spot.innerHTML = isMobile ? mobileEmbed : desktopEmbed;
+        ensureVismeScript();
+        obs.unobserve(section);
+      }
+    });
+  }, { 
+    threshold: 0,
+     rootMargin: "800px 0px 0px 0px" 
+    // ✅ fires as soon as the top edge of the section hits the viewport
+  });
+
+  io.observe(section);
+})();
+</script>
+
+
+
+
+<footer class="ftr99" aria-labelledby="ftr99-title">
+  <div class="ftr99-stars" aria-hidden="true"></div>
+
+  <div class="ftr99-wrap">
+    <div class="ftr99-grid">
+      <!-- Brand / blurb -->
+      <div class="ftr99-brand">
+        <!-- Placeholder logo -->
+        <div class="logo">
+      <img src="images/logo-white.png" alt="Logo">
+    </div>
+
+        <p class="ftr99-blurb">
+          Empowering your digital presence with
+          innovative web solutions.
+        </p>
+      </div>
+
+      <!-- Column: Company -->
+      <nav class="ftr99-col" aria-label="Company">
+        <h3 class="ftr99-head">Company</h3>
+        <ul class="ftr99-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#aboutus">About Us</a></li>
+           <li><a href="#Services-sec">Services</a></li>
+            <li><a href="#Process-sec">Process</a></li>
+             <li><a href="#Projects-sec">Works</a></li>
+              <li><a href="#review-sec">Reviews</a></li>
+               <li><a href="#Contact-us">Contact Us</a></li>
+        </ul>
+      </nav>
+
+      <!-- Column: Legal Pages -->
+      <nav class="ftr99-col" aria-label="Legal Pages">
+        <h3 class="ftr99-head">Legal Pages</h3>
+        <ul class="ftr99-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+          <li>
+            <button id="cookie-settings-btn" class="cookie-settings-btn" aria-label="Cookie Settings">Cookie Settings
+</button></li>
+        </ul>
+      </nav>
+
+      <!-- Column: Socials -->
+      <nav class="ftr99-col" aria-label="Socials">
+        <h3 class="ftr99-head">Socials</h3>
+        <ul class="ftr99-links">
+          <li><a href="#" rel="noopener">LinkedIn</a></li>
+          <li><a href="#" rel="noopener">Instagram</a></li>
+          <li><a href="#" rel="noopener">Twitter</a></li>
+          <li><a href="#" rel="noopener">Facebook</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Bottom row -->
+    <div class="ftr99-bottom reveal">
+  <!-- ISO certification logos -->
+  <div class="certifications-99 reveal">
+    <div class="cert-box-99"><img src="https://maplewebworks.com/iso.png" alt="ISO Certification 1"></div>
+    <div class="cert-box-99"><img src="https://maplewebworks.com/msme1.jpg" alt="ISO Certification 2"></div>
+    <div class="cert-box-99"><img src="https://maplewebworks.com/start.png" alt="ISO Certification 3"></div>
+    <div class="cert-box-99"><img src="https://maplewebworks.com/uxx.webp" alt="ISO Certification 4"></div>
+  </div>
+
+  © 2025 – All Rights Reserved. (Maple Web Works)
+</div>
+
+  </div>
+</footer>
+<!-- cookie banner  -->
+<!-- GDPR Cookie Banner -->
+<div id="cookie-banner" class="cookie-banner">
+  <div class="cookie-content">
+    <p style="color: #ffffff;">
+      We use cookies to improve your browsing experience, personalize content,
+      and analyze our traffic. You can accept all cookies or manage your
+      preferences below.
+      <a href="/privacy-policy" target="_blank">Learn more</a>
+    </p>
+    <div class="cookie-buttons">
+      <button id="accept-all">Accept All</button>
+      <button id="reject-all">Reject All</button>
+      <button id="customize">Customize</button>
+    </div>
+  </div>
+</div>
+
+<!-- Preferences Modal -->
+<div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true">
+  <div class="cookie-modal-content">
+    <h3>Cookie Preferences</h3>
+    <form id="cookie-preferences-form">
+      <label>
+        <input type="checkbox" name="necessary" checked disabled>
+        Necessary Cookies (Always Active)
+      </label><br>
+      <label>
+        <input type="checkbox" name="analytics">
+        Analytics Cookies
+      </label><br>
+      <label>
+        <input type="checkbox" name="marketing">
+        Marketing Cookies
+      </label><br>
+      <div class="cookie-actions">
+        <button type="submit">Save Preferences</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Floating "Cookie Settings" Button -->
+
+
+<script>
+(function(){
+  const banner = document.getElementById("cookie-banner");
+  const modal = document.getElementById("cookie-modal");
+  const acceptBtn = document.getElementById("accept-all");
+  const rejectBtn = document.getElementById("reject-all");
+  const customizeBtn = document.getElementById("customize");
+  const form = document.getElementById("cookie-preferences-form");
+  const settingsBtn = document.getElementById("cookie-settings-btn");
+
+  function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days*24*60*60*1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
+
+  function getCookie(name) {
+    const value = "; " + document.cookie;
+    const parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  }
+
+  function hideBanner() {
+    banner.style.display = "none";
+    settingsBtn.style.display = "block"; // Show settings button
+  }
+
+  // Show banner if no consent yet
+  if (!getCookie("cookieConsent")) {
+    banner.style.display = "block";
+  } else {
+    settingsBtn.style.display = "block"; // Already consented -> show settings
+  }
+
+  acceptBtn.addEventListener("click", () => {
+    setCookie("cookieConsent", "all", 365);
+    hideBanner();
+  });
+
+  rejectBtn.addEventListener("click", () => {
+    setCookie("cookieConsent", "necessary", 365);
+    hideBanner();
+  });
+
+  customizeBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const analytics = form.analytics.checked ? "1" : "0";
+    const marketing = form.marketing.checked ? "1" : "0";
+    setCookie("cookieConsent", JSON.stringify({ analytics, marketing }), 365);
+    modal.style.display = "none";
+    hideBanner();
+  });
+
+  // Open modal from floating button
+  settingsBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  // Close modal on outside click
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+})();
+</script>
+
+<!-- scroll animation  -->
+ <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const reveals = document.querySelectorAll(".reveal");
+
+  const io = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target); // animate only once
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => io.observe(el));
+});
+</script>
+
+
+</body>
+</html>
