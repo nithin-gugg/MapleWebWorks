@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Maple WebWorks</title>
+  <title>Single Page — Grid Background</title>
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -776,170 +776,164 @@ p {
 
 /* process */
 /* ============ How It Works (proc42) ============ */
-.proc42{
-  padding: clamp(32px, 6vw, 72px) 20px;
- 
+.infographic-section {
+  --font-size: 0.8em;
+  --bg1: #f5f8f7;
+  --blue: #3498db;
+  --green: #2ecc71;
+  --purple: #9b59b6;
+  --gold: #f1c40f;
+  --red: #ff5a21;
+  --orange: #e67e22;
+  --blaky:var(--badge-ink);
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem;
+  /* background: var(--bg1); */
 }
-.proc42-wrap{
-  max-width: 900px;
-  margin: 0 auto;
+
+.infographic-section ul.infoGraphic {
+  font-size: var(--font-size);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.infographic-section ul.infoGraphic li {
+  position: relative;
+  width: 100%;
+  max-width: 25em;
+  /* background: var(--bg1); */
+  border-radius: 0.5em;
+  padding: 0.5em;
+  z-index: 1;
+  transition: all 0.2s;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* number style */
+.infographic-section .numberWrap {
+  position: absolute;
+}
+
+.infographic-section .number {
+  font-family: "Maven Pro", sans-serif;
+  font-size: 9em;
+  font-weight: 900;
+  width: 0.9em;
   text-align: center;
 }
 
-/* badge */
-.proc42-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 14px;
-  border:1px solid #eee;
-  border-radius:999px;
-  font-weight:600;
-  color:#222;
-  background:#fff;
-  box-shadow:0 6px 18px rgba(0,0,0,.06);
-  margin-bottom:14px;
-}
-.proc42-badge::before{
-  content:"✦";
-  color:#ff5a21;
-  font-weight:900;
+.infographic-section .fontColor1 { color: var(--blue); }
+.infographic-section .fontColor2 { color: var(--green); }
+.infographic-section .fontColor3 { color: var(--purple); }
+.infographic-section .fontColor4 { color: var(--gold); }
+.infographic-section .fontColor5 { color: var(--red); }
+.infographic-section .fontColor6 { color: var(--orange); }
+
+.infographic-section .coverWrap {
+  transform: rotate(130deg);
+  position: absolute;
+  width: 18em;
+  height: 15em;
+  left: -3em;
+  top: -1em;
 }
 
-/* heading + sub */
-.proc42-title{
-  margin:0;
-  font-weight:900;
-  letter-spacing:-.01em;
-  color:#141414;
-  font-size: clamp(28px, 5.4vw, 40px);
-}
-.proc42-sub{
-  margin:10px auto 28px;
-  max-width: 700px;
-  color:#545454;
-  font-size: clamp(14px, 1.5vw, 16px);
-  line-height:1.6;
+.infographic-section .numberCover {
+  position: absolute;
+  background: var(--bg1);
+  width: 18em;
+  height: 6em;
+  border-radius: 50% 50% 0 0;
+  border-bottom: 3px solid #f5f8f7;
+  transition: all 0.4s;
 }
 
-/* grid */
-.proc42-grid{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 18px;
-  text-align:left;
+.infographic-section .numberCover::before {
+  position: absolute;
+  content: "";
+  bottom: 5px;
+  left: 4em;
+  right: 4em;
+  top: 5em;
+  box-shadow: 0 0 30px 17px #48668577;
+  border-radius: 100px / 10px;
+  z-index: -1;
 }
 
-/* card */
-.proc42-card{
+.infographic-section .numberCover::after {
+  position: absolute;
+  bottom: 0;
+  content: "";
+  left: -10%;
+  width: 120%;
+  height: 150%;
+  background: radial-gradient(at bottom, #48668533, transparent, transparent);
+  z-index: 1;
+}
+
+.infographic-section li:hover .numberCover {
+  border-radius: 100%;
+}
+
+/* content style */
+.infographic-section .content {
+  margin: 8em 3em 1em 7em;
   position: relative;
-  background: #ffffff;
-  border: 1px solid #efefef;
-  border-radius: 16px;
-  box-shadow: 0 16px 34px rgba(0,0,0,.07);
-  padding: 14px 14px 18px;
-  overflow: hidden;
+  text-align: center;
 }
 
-/* small step badge */
-.proc42-step{
-  position:absolute;
-  top: 10px; left: 12px;
-  font-size:12px; font-weight:700; color:#444;
-  background:#f7f7f9;
-  border:1px solid #e7e7ef;
-  border-radius:8px;
-  padding:4px 8px;
+.infographic-section .content h2 {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
-/* illustration area (soft glow bg) */
-.proc42-art{
-  position: relative;
-  height: 160px;
-  margin: 28px 6px 10px;
-  border-radius: 12px;
-  background:
-    radial-gradient(120px 80px at 30% 70%, rgba(255,138,51,.20), transparent 60%),
-    radial-gradient(130px 90px at 70% 30%, rgba(72,125,255,.18), transparent 60%),
-    linear-gradient(#fafbff, #f8f8fe);
-  border:1px solid #f0f0f8;
-  overflow:hidden;
-}
-.proc42-art::after{
-  content:"";
-  position:absolute; inset:0;
-  box-shadow: inset 0 0 60px rgba(255,255,255,.7);
-  border-radius:12px;
-  pointer-events:none;
+.infographic-section .content p {
+  line-height: 1.5em;
+  font-size: 16px;
 }
 
-/* generic tiny dots (card 1) */
-.proc42-dot{
-  position:absolute; width:18px; height:18px; border-radius:50%;
-  background:#fff; border:1px solid #e8e8f4;
-  box-shadow: 0 6px 16px rgba(0,0,0,.08);
-}
-.proc42-dot:nth-child(1){ left:22%; top:32%; }
-.proc42-dot:nth-child(2){ left:42%; top:52%; }
-.proc42-dot:nth-child(3){ right:16%; top:38%; background:#ff6a2d; border-color:#ffc7b0; }
-
-/* chips & pills for other cards */
-.proc42-chip{
-  position:absolute;
-  display:inline-block;
-  background:#1f1f1f; color:#fff;
-  font-size:12px; padding:6px 10px; border-radius:999px;
-  box-shadow:0 10px 18px rgba(0,0,0,.18);
-}
-.proc42-chip:nth-child(1){ left:20%; top:24%; }
-.proc42-chip:nth-child(2){ left:38%; top:50%; background:#4b6bff; }
-.proc42-chip:nth-child(3){ right:14%; top:28%; background:#ff6a2d; }
-
-/* sticker & ribbon (card 3) */
-.proc42-sticker{
-  position:absolute; left:20%; top:28%;
-  background:#fff; border:1px dashed #ffbda0; color:#f06a2b;
-  font-size:12px; padding:6px 10px; border-radius:8px;
-  transform: rotate(-3deg);
-  box-shadow:0 10px 18px rgba(0,0,0,.12);
-}
-.proc42-ribbon{
-  position:absolute; left:38%; top:56%;
-  background:#ff6420; color:#fff; font-weight:700;
-  font-size:12px; padding:6px 12px; border-radius:10px;
-  transform: rotate(-12deg);
-  box-shadow:0 14px 22px rgba(255,100,32,.25);
+/* icons */
+.infographic-section .icon {
+  position: absolute;
+  font-size: 2rem;
+  text-align: center;
+  top: -1.3em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: FontAwesome;
+  color: #666;
 }
 
-/* publish pill (card 4) */
-.proc42-pill{
-  position:absolute; right:18%; top:54%;
-  background:#ff6420; color:#fff; font-weight:700;
-  font-size:12px; padding:7px 12px; border-radius:999px;
-  box-shadow:0 14px 22px rgba(255,100,32,.25);
+.infographic-section .iconCodepen::before { content: "\f1cb"; }
+.infographic-section .iconSocial::before { content: "\f08a"; }
+.infographic-section .iconAirplane::before { content: "\f1d9"; }
+.infographic-section .iconMap::before { content: "\f278"; }
+.infographic-section .iconBulb::before { content: "\f0eb"; }
+
+/* font imports */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@800&display=swap");
+.process-wrapper {
+  max-width: 1200px;
+  width: 100%;
 }
 
-/* text */
-.proc42-h3{
-  margin:8px 2px 6px;
-  font-size: clamp(16px, 2.2vw, 18px);
-  font-weight:700; color:#141414;
+.process-wrapper ul.infoGraphic {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-.proc42-p{
-  margin:0 2px;
-  color:#5a5a6a;
-  font-size: clamp(13.5px, 1.6vw, 15px);
-  line-height:1.55;
-}
-.proc42-p strong{ color:#222; }
-
-/* responsive */
-@media (max-width: 860px){
-  .proc42-grid{ grid-template-columns: 1fr; }
-  .proc42-card{ padding: 12px; }
-  .proc42-art{ height: 150px; }
-}
-
 
 /* Base Section */
 .projects-section {
@@ -2001,84 +1995,94 @@ mobileLinks.forEach(link => {
   </div>
 </section>
 
-<section id="Process-sec" class="proc42" aria-labelledby="proc42-title">
-  <div class="proc42-wrap">
-    <!-- eyebrow / badge -->
-    <div class="proc42-badge reveal">Process</div>
-
-    <!-- heading & subcopy -->
-    <h2 id="proc42-title" class="proc42-title reveal">How It Works?</h2>
-    <p class="proc42-sub reveal">
-      A quick overview of how we work together to make your
-      website best in class!
-    </p>
-
-    <!-- cards -->
-    <div class="proc42-grid">
-      <!-- Card 1 -->
-      <article class="proc42-card reveal">
-        <span class="proc42-step">01</span>
-        <div class="proc42-art" aria-hidden="true">
-          <!-- illustration placeholders -->
-          <span class="proc42-dot"></span>
-          <span class="proc42-dot"></span>
-          <span class="proc42-dot"></span>
+<!-- process   -->
+ 
+<section id="Process-sec" class="infographic-section">
+   <div class="reviews-header-202">
+      <div class="svc88-badge reveal">Process</div>
+      <h2 class="reveal">How It Works?</h2>
+      <p class="reveal"> A quick overview of how we work together to make your
+      website best in class!</p>
+    </div> 
+  <div class="process-wrapper">
+    <ul class="infoGraphic"> 
+      <li>
+        <div class="numberWrap">
+          <div class="number fontColor1 reveal">1</div>
+          <div class="coverWrap"><div class="numberCover"></div></div>
         </div>
-        <h3 class="proc42-h3">Share Your Vision</h3>
-        <p class="proc42-p">
-          <strong>Tell us what you’re looking for</strong> — via a quick form or a
-          short call. Send references, moodboards, or any ideas.
-        </p>
-      </article>
-
-      <!-- Card 2 -->
-      <article class="proc42-card reveal">
-        <span class="proc42-step">02</span>
-        <div class="proc42-art" aria-hidden="true">
-          <span class="proc42-chip">Design</span>
-          <span class="proc42-chip">Assets</span>
-          <span class="proc42-chip">Final</span>
+        <div class="content">
+          <div class="icon iconCodepen"></div>
+          <h2>Discovery</h2>
+          <p>We analyze your brand, audience, and goals to shape a clear project roadmap.</p>
         </div>
-        <h3 class="proc42-h3">We Start Building</h3>
-        <p class="proc42-p">
-          <strong>Our dev team gets to work.</strong> We’ll create a fully responsive,
-          performance-optimized website, iterating fast.
-        </p>
-      </article>
+      </li>
 
-      <!-- Card 3 -->
-      <article class="proc42-card reveal">
-        <span class="proc42-step">03</span>
-        <div class="proc42-art" aria-hidden="true">
-          <span class="proc42-sticker">Requested a Revision</span>
-          <span class="proc42-ribbon">Revision in progress!</span>
+      <li>
+        <div class="numberWrap">
+          <div class="number fontColor2 reveal">2</div>
+          <div class="coverWrap"><div class="numberCover"></div></div>
         </div>
-        <h3 class="proc42-h3">Review & Refine</h3>
-        <p class="proc42-p">
-          <strong>You check it out, we polish it.</strong> We offer feedback rounds so
-          you get exactly what you need.
-        </p>
-      </article>
+        <div class="content">
+          <div class="icon iconSocial"></div>
+          <h2>Content Planning & Wireframing</h2>
+          <p>We structure your site’s layout and content to ensure a seamless user experience.</p>
+        </div>
+      </li>
 
-      <!-- Card 4 -->
-      <article class="proc42-card reveal">
-        <span class="proc42-step">04</span>
-        <div class="proc42-art" aria-hidden="true">
-          <span class="proc42-chip">Final_Cut_v2.mp4</span>
-          <span class="proc42-chip">Thumbnail.png</span>
-          <span class="proc42-pill">Publish</span>
+      <li>
+        <div class="numberWrap">
+          <div class="number fontColor3 reveal">3</div>
+          <div class="coverWrap"><div class="numberCover"></div></div>
         </div>
-        <h3 class="proc42-h3">Launch & Handoff</h3>
-        <p class="proc42-p">
-          <strong>Once you’re happy, we go live!</strong> You get the final site
-          deployed + CMS access + training if needed.
-        </p>
-      </article>
-    </div>
+        <div class="content">
+          <div class="icon iconAirplane"></div>
+          <h2>Design & Delivery</h2>
+          <p>Our team designs a unique visual system and defines key site functionalities for an exceptional user experience.</p>
+        </div>
+      </li>
+
+      <li>
+        <div class="numberWrap">
+          <div class="number fontColor4 reveal">4</div>
+          <div class="coverWrap"><div class="numberCover"></div></div>
+        </div>
+        <div class="content">
+          <div class="icon iconMap"></div>
+          <h2>Content <br> Entry & Page Building</h2>
+          <p>We develop your website by integrating content and design into a functional, responsive interface.</p>
+        </div>
+      </li>
+
+      <li>
+        <div class="numberWrap">
+          <div class="number fontColor5 reveal">5</div>
+          <div class="coverWrap"><div class="numberCover"></div></div>
+        </div>
+        <div class="content">
+          <div class="icon iconBulb"></div>
+          <h2>Quality Assurance & Client Training</h2>
+          <p>We test your site thoroughly across devices and train your team to manage it efficiently.</p>
+        </div>
+      </li>
+
+      <li>
+        <div class="numberWrap">
+          <div class="number fontColor5 reveal">6</div>
+          <div class="coverWrap"><div class="numberCover"></div></div>
+        </div>
+        <div class="content">
+          <div class="icon iconBulb"></div>
+          <h2>Launch & <br> Post-Launch Development</h2>
+          <p>We launch your website and provide ongoing support, maintenance, and optimization.</p>
+        </div>
+      </li>
+    </ul>
   </div>
 </section>
 
 
+<!-- projects  -->
 <section id="Projects-sec" class="projects-section">
   <div class="projects-container">
     <div class="svc88-badge reveal">Projects</div>
@@ -2363,8 +2367,8 @@ mobileLinks.forEach(link => {
       <nav class="ftr99-col" aria-label="Legal Pages">
         <h3 class="ftr99-head">Legal Pages</h3>
         <ul class="ftr99-links">
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms-and-conditions.html">Refund Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
           <li>
             <button id="cookie-settings-btn" class="cookie-settings-btn" aria-label="Cookie Settings">Cookie Settings
 </button></li>
@@ -2537,5 +2541,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
-
-
