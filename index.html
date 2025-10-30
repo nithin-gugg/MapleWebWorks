@@ -864,6 +864,50 @@ img {
 p {
     text-align: center;
 }
+@media (max-width: 768px) {
+  .flexbox {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .flex {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem 1rem;
+    border: none;
+    box-shadow: none;
+  }
+
+  .flextop,
+  .flexbottom {
+    border: none;
+    box-shadow: none;
+  }
+
+  .flextop:before,
+  .flextop:after {
+    display: none;
+  }
+
+  .imgbox {
+    display: none;
+  }
+
+  .stepNumber {
+    font-size: 1.8rem;
+    width: fit-content;
+    margin: 0 auto 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .textbox p {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+ 
+}
 
 
 /* Base Section */
@@ -2491,5 +2535,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
